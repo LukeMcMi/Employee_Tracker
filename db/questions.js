@@ -18,4 +18,9 @@ module.exports = {
             "Exit"
         ]
     },
+    addEmployee: (roles, employees) => [{
+        type: "input",
+        message: "What is your employee's first name?",
+        name: "first_name",
+    }
 }
