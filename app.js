@@ -221,3 +221,26 @@ async function rmRole() {
             });
     })
 }
+
+function rmEmployee() {
+    connection.query("SELECT * FROM employee", async (err, employee) => {
+        const {
+            employeeName
+        } = await inquirer.prompt([{
+            type: "list",
+            message: "Select employee to delete:",
+            name: "employeeName",
+            choices: () => {
+                return employee.map((employee) => `${employee.last_name}`);
+            }
+        }]);
+        connection.query(`DELETE FROM employee WHERE ?`, {
+                last_name: employeeName
+            },
+            function (err, res) {
+                if (err) throw err;
+                console.table(res);
+                start();
+            });
+    })
+}
