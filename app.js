@@ -54,7 +54,7 @@ async function addEmployee() {
     connection.query(qry, async (err, employees) => {
         qry = "SELECT id as value, title as name FROM roles"
         connection.query(qry, async (err, roles) => {
-            const newEmp = await inquirer(questions.addEmployee(roles, employees));
+            const newEmp = await inquirer.prompt(questions.addEmployee(roles, employees));
             qry = "INSERT INTO employee SET ?"
             connection.query(qry, newEmp, function (err) {
                 if (err) throw err;
