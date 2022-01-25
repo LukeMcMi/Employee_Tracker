@@ -197,3 +197,27 @@ function employeesByDepartment() {
         });
     })
 }
+
+async function rmRole() {
+    connection.query("SELECT * FROM role", async (err, role) => {
+        const {
+            roleName
+        } = await inquirer.prompt([{
+            type: "list",
+            message: "Select role to delete:",
+            name: "roleName",
+            choices: () => {
+                return role.map((role) => role.title);
+            }
+        }]);
+        console.log(roleName);
+        connection.query(`DELETE FROM role WHERE ?`, {
+                title: roleName
+            },
+            function (err, res) {
+                if (err) throw err;
+                console.table(role);
+                start();
+            });
+    })
+}
