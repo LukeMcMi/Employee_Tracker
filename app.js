@@ -48,3 +48,19 @@ async function start() {
             connection.end();
     }
 }
+
+async function addEmployee() {
+    let qry = "SELECT id as value, CONCAT(first_name, ' ', last_name) as name FROM employee"
+    connection.query(qry, async (err, employees) => {
+        qry = "SELECT id as value, title as name FROM roles"
+        connection.query(qry, async (err, roles) => {
+            const newEmp = await inquirer(questions.addEmployee(roles, employees));
+            qry = "INSERT INTO employee SET ?"
+            connection.query(qry, newEmp, function (err) {
+                if (err) throw err;
+                console.log("New employee added successfully!");
+                start();
+            });
+        })
+    })
+}
