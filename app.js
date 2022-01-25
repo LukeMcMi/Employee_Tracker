@@ -64,3 +64,72 @@ async function addEmployee() {
         })
     })
 }
+
+async function addDepartment() {
+    const departmentDetails = await inquirer.prompt(addDepartmentQuestions)
+    connection.query("INSERT INTO department SET ?", {
+            name: departmentDetails.department_name
+        },
+        function (err) {
+            if (err) throw err;
+            console.log("New department added successfully!");
+            start();
+        }
+    );
+}
+
+async function addNewRole() {
+    const roleDetails = await inquirer.prompt(addRole)
+    connection.query("INSERT INTO role SET ?", {
+            title: roleDetails.titleRole,
+            salary: roleDetails.salary,
+            department_id: roleDetails.departmentIDrole
+        },
+        function (err) {
+            if (err) throw err;
+            console.log("New department added successfully!");
+            start();
+        }
+    );
+}
+
+async function updateRole() {
+    connection.query("SELECT * FROM employee", async (err, employee) => {
+        const {
+            worker,
+            newrole
+        } = await inquirer.prompt([{
+                type: "list",
+                message: "Choose employee to update:",
+                name: "worker",
+                choices: () => {
+                    return employee.map((employee) => employee.last_name);
+                },
+            },
+            {
+                type: "list",
+                message: "What is this employee's new role?",
+                name: "newrole",
+                choices: () => {
+                    return employee.map((employee) => employee.role_id);
+                }
+            }
+        ]);
+        connection.query(
+            "UPDATE employee SET ? WHERE ?",
+            [{
+                    role_id: newrole,
+                },
+                {
+                    last_name: worker,
+                },
+            ],
+            function (err, res) {
+                if (err) throw err;
+                console.log(res.affectedRows + " products updated!\n");
+                console.table(employee);
+                start();
+            }
+        );
+    })
+}
