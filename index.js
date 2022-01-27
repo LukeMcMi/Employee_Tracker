@@ -32,7 +32,7 @@ async function start() {
             addDepartment();
             break;
         case "Add Role":
-            addNewRole();
+            addRole();
             break;
         case "View Departments":
             printDepartments();
@@ -43,14 +43,8 @@ async function start() {
         case "Update Employee's Role":
             updateRole();
             break;
-        case "View All Employees by Manager":
-            employeesByManager();
-            break;
         case "Remove Employee":
             rmEmployee();
-            break;
-        case "View All Employees by Ddepartment":
-            employeesByDepartment();
             break;
         case "View All Roles":
             printRoles();
@@ -82,9 +76,9 @@ async function addEmployee() {
 }
 
 async function addDepartment() {
-    const departmentDetails = await inquirer.prompt(addDepartmentQuestions)
+    const departmentDetails = await inquirer.prompt(questions.addDepartment)
     connection.query("INSERT INTO department SET ?", {
-            name: departmentDetails.department_name
+            department_name: departmentDetails.department_name
         },
         function (err) {
             if (err) throw err;
@@ -94,16 +88,15 @@ async function addDepartment() {
     );
 }
 
-async function addNewRole() {
-    const roleDetails = await inquirer.prompt(addRole)
-    connection.query("INSERT INTO role SET ?", {
-            title: roleDetails.titleRole,
-            salary: roleDetails.salary,
-            department_id: roleDetails.departmentIDrole
+async function addRole() {
+    const roleDetails = await inquirer.prompt(questions.addRole);
+    connection.query("INSERT INTO roles SET ?", {
+            title: roleDetails.title,
+            salary: roleDetails.salary
         },
         function (err) {
             if (err) throw err;
-            console.log("New department was added successfully!");
+            console.log("New role was added successfully!");
             start();
         }
     );
@@ -158,7 +151,7 @@ function printDepartments() {
     });
 }
 function printEmployees() {
-    connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id", function (err, res) {
+    connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
@@ -166,75 +159,11 @@ function printEmployees() {
 }
 
 function printRoles() {
-    connection.query("SELECT title FROM role", function (err, res) {
+    connection.query("SELECT title FROM roles", function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
     });
-}
-
-function employeesByManager() {
-    connection.query("SELECT * FROM employee", async (err, employee) => {
-        const {
-            managerID
-        } = await inquirer.prompt([{
-            type: "list",
-            message: "Choose a manager:",
-            name: "managerID",
-            choices: () => {
-                return employee.map((manager) => manager.manager_id);
-            },
-        }, ]);
-        connection.query(`SELECT first_name, last_name FROM employee WHERE manager_id=${managerID}`, function (err, res) {
-            if (err) throw err;
-            console.table(res);
-            start();
-        });
-    })
-}
-
-function employeesByDepartment() {
-    connection.query("SELECT * FROM department", async (err, department) => {
-        const {
-            departmentName
-        } = await inquirer.prompt([{
-            type: "list",
-            message: "Select a Department:",
-            name: "departmentName",
-            choices: () => {
-                return department.map((department) => department.name);
-            }
-        }]);
-        connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id", function (err, res) {
-            if (err) throw err;
-            console.table(res.filter((name) => departmentName === name.department));
-            start();
-        });
-    })
-}
-
-async function rmRole() {
-    connection.query("SELECT * FROM role", async (err, role) => {
-        const {
-            roleName
-        } = await inquirer.prompt([{
-            type: "list",
-            message: "Select a role to delete:",
-            name: "roleName",
-            choices: () => {
-                return role.map((role) => role.title);
-            }
-        }]);
-        console.log(roleName);
-        connection.query(`DELETE FROM role WHERE ?`, {
-                title: roleName
-            },
-            function (err, res) {
-                if (err) throw err;
-                console.table(role);
-                start();
-            });
-    })
 }
 
 function rmEmployee() {

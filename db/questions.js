@@ -9,11 +9,8 @@ module.exports = {
             "View Departments",
             "View Employees",
             "Update Employee's Role",
-            "View All Employees by Manager",
             "Remove Employee",
-            "View All Employees by Ddepartment",
             "View All Roles",
-            "Remove Roles",
             "Exit"
         ]
     },
@@ -40,39 +37,31 @@ module.exports = {
             choices: employees
         }
     ],
-    addDepartmentQuestions: {
+    addDepartment: {
         type: "input",
         message: "What is the name of your department?",
         name: "department_name",
     },
+
     addRole: [{
             type: "input",
             message: "What is the title of your new role?",
-            name: "titleRole",
+            name: "title",
         },
         {
             type: "input",
             message: "What is the salary for this role?",
             name: "salary",
         },
-        {
-            type: "input",
-            message: "What is the department id for this role?",
-            name: "departmentIDrole",
-        }
     ],
-    removeRole: {
-        type: "list",
-        message: "What is your employee's role?",
-        name: "roleRemoval",
-        choices: ["Manager", "Associate", "Soft"]
-    },
+
     exit: {
         type: "list",
         message: "Are your sure you would like to quit?",
         name: "quit",
         choices: ["Yes", "No"]
     },
+    
     removeEmployee: {
         type: "list",
         message: "What is your employee's role?",
