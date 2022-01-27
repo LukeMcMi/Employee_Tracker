@@ -13,7 +13,6 @@ module.exports = {
             "Remove Employee",
             "View All Employees by Ddepartment",
             "View All Roles",
-            "Add a Role",
             "Remove Roles",
             "Exit"
         ]
@@ -68,7 +67,7 @@ module.exports = {
         name: "roleRemoval",
         choices: ["Manager", "Associate", "Soft"]
     },
-    quit: {
+    exit: {
         type: "list",
         message: "Are your sure you would like to quit?",
         name: "quit",

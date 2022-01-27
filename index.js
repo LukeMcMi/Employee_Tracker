@@ -25,44 +25,42 @@ function displayLogo() {
 async function start() {
     const userChoice = await inquirer.prompt(questions.initialQuestion);
     switch (userChoice.initial) {
-        case "Add an employee":
+        case "Add Employee":
             addEmployee();
             break;
-        case "Add a department":
+        case "Add Department":
             addDepartment();
             break;
-        case "Add a role":
+        case "Add Role":
             addNewRole();
             break;
-        case "View departments":
+        case "View Departments":
             printDepartments();
             break;
-        case "View employees":
+        case "View Employees":
             printEmployees();
             break;
-        case "Update employee role":
+        case "Update Employee's Role":
             updateRole();
             break;
-        case "View all employees by manager":
+        case "View All Employees by Manager":
             employeesByManager();
             break;
-        case "Remove employee":
+        case "Remove Employee":
             rmEmployee();
             break;
-        case "View all employees by department":
+        case "View All Employees by Ddepartment":
             employeesByDepartment();
             break;
-        case "View all roles":
+        case "View All Roles":
             printRoles();
             break;
-        case "Remove roles":
+        case "Remove Roles":
             rmRole();
             break;
-        case "Quit":
+        case "Exit":
             connection.end();
             break;
-        default:
-            connection.end();
     }
 
 }
