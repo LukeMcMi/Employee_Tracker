@@ -3,8 +3,7 @@ module.exports = {
         type: "list",
         message: "What would you like to do?",
         name: "initial",
-        choices: [
-            "Add Employee",
+        choices: ["Add Employee",
             "Add Department",
             "Add Role",
             "View Departments",
@@ -42,7 +41,6 @@ module.exports = {
             choices: employees
         }
     ],
-
     addDepartmentQuestions: {
         type: "input",
         message: "What is the name of your department?",

@@ -1,15 +1,16 @@
+const { init } = require('express/lib/application');
 const mysql = require('mysql2');
-
 require('dotenv').config();
 
 const connection = mysql.createConnection(
     {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
+      host: "127.0.0.1",  
+      user: "root",
+      port: 3306,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME
+      database: "employee_tracker_db"
     },
-    console.log(`Connected to the company_db database.`)
+    console.log(`Connected to the employee_tracker_db database.`)
 );
 
 connection.connect(err => {
